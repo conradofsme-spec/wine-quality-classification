@@ -41,7 +41,7 @@ def plot_distribuicoes(df, colunas_para_excluir=None):
     plt.show()
 
 # Gera um Heatmap referente à correlação das variáveis com o alvo
-def plot_correlacao_alvo(df, col_alvo, colunas_para_excluir=None):
+def plot_correlacao_alvo(df, col_alvo, colunas_para_excluir=None, titulo=None):
 
     sns.set_theme(style="whitegrid")
 
@@ -58,8 +58,41 @@ def plot_correlacao_alvo(df, col_alvo, colunas_para_excluir=None):
     # Configurações do gráfico
     plt.figure(figsize=(8, 10))
     sns.heatmap(corr_alvo, annot=True, fmt=".2f", cmap="coolwarm", center=0, vmin=-1, vmax=1)
-    plt.title("O que define a qualidade do vinho?", fontsize=16)
+    plt.title(titulo, fontsize=16)
     plt.tight_layout()
     
     # Exibe o gráfico
+    plt.show()
+
+# Gera um gráfico de barras mostrando a contagem e o percentual de cada classe na variável alvo.
+def plot_balanceamento_classes(df, col_alvo, rotulo_x=None):
+    
+    sns.set_theme(style="whitegrid")
+    plt.figure(figsize=(8, 6))
+
+    # Cria o gráfico de contagem baseado na coluna dinâmica
+    ax = sns.countplot(x=col_alvo, data=df, palette="Set2")
+
+    # Título dinâmico que recebe o nome da coluna
+    plt.title(f"Distribuição das Classes ({col_alvo})", fontsize=14)
+
+    # Rótulo X dinâmico que recebe o nome da coluna
+    if rotulo_x is None:
+        plt.xlabel(col_alvo.capitalize(), fontsize=12)
+    else:
+        plt.xlabel(rotulo_x, fontsize=12)
+    
+    # Adiciona os percentuais e quantidades acima de cada barra
+    total = len(df)
+    for p in ax.patches:
+        altura = p.get_height()
+        if altura > 0: # Evita barras vazias
+            percentual = (altura / total) * 100
+            ax.text(p.get_x() + p.get_width() / 2.,
+                    altura + (total * 0.01),
+                    f'{int(altura)} ({percentual:.1f}%)',
+                    ha="center", fontsize=12, fontweight='bold')
+    
+    # Exibe o gráfico
+    plt.tight_layout()
     plt.show()
