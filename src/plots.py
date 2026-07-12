@@ -71,7 +71,7 @@ def plot_balanceamento_classes(df, col_alvo, rotulo_x=None):
     plt.figure(figsize=(8, 6))
 
     # Cria o gráfico de contagem baseado na coluna dinâmica
-    ax = sns.countplot(x=col_alvo, data=df, palette="Set2")
+    ax = sns.countplot(x=col_alvo, hue=col_alvo, data=df, palette="Set2", legend=False)
 
     # Título dinâmico que recebe o nome da coluna
     plt.title(f"Distribuição das Classes ({col_alvo})", fontsize=14)
